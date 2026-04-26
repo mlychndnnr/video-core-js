@@ -1,5 +1,3 @@
-# Complete Release Workflow Guide for Beginners
-
 This document explains **step-by-step** how the automated release process works in this repository, from making code changes to publishing on NPM.
 
 ## Table of Contents
@@ -65,9 +63,9 @@ Here's the **big picture** of what happens from code change to NPM publish:
 └─────────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│ 6. MANUAL: TRIGGER NPM PUBLISH WORKFLOW                        │
-│    - Developer reviews the release                             │
-│    - Manually triggers npm-publish.yml workflow                │
+│ 6. AUTOMATIC: NPM PUBLISH WORKFLOW TRIGGERS                    │
+│    - Automatically triggered by release publication            │
+│    - Or manually triggered if needed                           │
 └─────────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────────┐
@@ -270,33 +268,32 @@ chore(release): 4.1.6 [skip ci]
 
 ---
 
-### **STEP 6: Manual Trigger of NPM Publish**
+### **STEP 6: Automatic Trigger of NPM Publish**
 
 **What happens:**
-⚠️ **This step is MANUAL** - you need to trigger it yourself.
+✅ **This step is AUTOMATIC** - triggers when the release is published.
 
-**Why manual?**
-- Gives you a chance to review the release
-- Ensures you're ready to publish to NPM
-- Prevents accidental publishes
+**How it works:**
+1. Release workflow creates a GitHub release (Step 4c)
+2. NPM publish workflow automatically detects the new release
+3. NPM publish workflow starts immediately
+4. Package is published to NPM
 
-**How to trigger:**
+**Manual trigger still available:**
+You can also trigger it manually if needed:
 1. Go to GitHub Actions tab
 2. Click on "Publish Module" workflow
 3. Click "Run workflow"
-4. Confirm and run
-
-**Or via Pull Request:**
-- Create a PR to `stable` or `stable-beta` branch
-- When merged, it automatically triggers the publish workflow
+4. Optionally add S3 upload parameters
+5. Confirm and run
 
 ---
 
-## Manual vs Automatic NPM Publishing
+## ~~Manual~~ Automatic NPM Publishing (Updated!)
 
-This repository uses **manual NPM publishing** by default. Here's a comparison to help you understand the trade-offs:
+This repository now uses **automatic NPM publishing** triggered by release creation. Here's what changed and the trade-offs:
 
-### 📋 Manual NPM Publishing (Current Setup)
+### 🤖 Automatic NPM Publishing (Current Setup)
 
 #### ✅ Pros:
 
@@ -344,20 +341,23 @@ This repository uses **manual NPM publishing** by default. Here's a comparison t
    - Defeats some benefits of CI/CD automation
    - Additional manual intervention in the pipeline
 
-#### 📖 Example Scenario (Manual):
+#### 📖 Example Scenario (Automatic):
 ```
-✅ Good outcome:
-PR merged → Release v4.2.0 created → You review → Found typo in changelog
-→ Fix changelog → Publish to NPM → Clean release!
+✅ Current setup:
+PR merged → Release v4.2.0 created → Tests pass → Auto-published to NPM
+→ Available to users in ~5 minutes!
 
-❌ Without manual step:
-PR merged → Release v4.2.0 created → Auto-published → Found typo
-→ Too late! Already on NPM with wrong changelog
+⚠️ Important note:
+Since publishing is automatic, ensure your PR review is thorough:
+- Review code changes carefully
+- Verify tests pass
+- Check commit messages follow conventions
+- Validate changelog will be correct
 ```
 
 ---
 
-### 🤖 Automatic NPM Publishing (Alternative)
+### 📋 Manual NPM Publishing (Alternative - If Needed)
 
 #### ✅ Pros:
 
@@ -442,33 +442,51 @@ if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '.0.0')
 
 ---
 
-### 📊 Recommendation
+### 📊 Current Configuration
 
-**For this repository, we use Manual Publishing because:**
+**This repository now uses Automatic Publishing because:**
 
-1. ✅ **Safety First**: NPM packages affect many users
-2. ✅ **Quality Control**: Review before public release
-3. ✅ **Compliance**: Enterprise requirements for approval
-4. ✅ **Flexibility**: Can hold or coordinate releases
+1. ✅ **Speed**: Faster delivery to users
+2. ✅ **Consistency**: Every release automatically goes live
+3. ✅ **Simplicity**: One-step process from merge to NPM
+4. ✅ **Trust in Tests**: Comprehensive test suite provides confidence
 
-**When to Consider Automatic:**
-- High test coverage (>90%)
-- Well-established CI/CD practices
-- Small team needing speed over control
-- Internal packages (not public NPM)
-- Beta/canary releases
+**Safety Measures in Place:**
+- ✅ Tests must pass before release creation
+- ✅ PR review required before merge
+- ✅ Semantic-release validates commits
+- ✅ Build must succeed before publish
+- ✅ Security audit runs before publish
+
+**When to Consider Manual Publishing:**
+- Need staged rollouts with coordination
+- Require manual QA before public release
+- Regulatory/compliance requirements
+- Want explicit approval for each publish
 
 ---
 
-### 🔧 Switching to Automatic (If Needed)
+### 🔧 Switching to Manual (If Needed)
 
-If you decide to switch to automatic NPM publishing, you can:
+If you need to switch back to manual NPM publishing:
 
-1. **Update npm-publish.yml** to trigger on release creation
-2. **Add environment protection** for approval gates
-3. **Set up conditional logic** for version-based automation
+1. **Remove the release trigger** from npm-publish.yml:
+   ```yaml
+   # Remove this:
+   release:
+     types:
+       - published
+   ```
 
-See the repository maintainer or DevOps team to discuss changing this configuration.
+2. **Keep only manual trigger**:
+   ```yaml
+   on:
+     workflow_dispatch:  # Manual only
+   ```
+
+3. **Update documentation** to reflect manual process
+
+Discuss with the team before making this change.
 
 ---
 
