@@ -22,3 +22,6 @@ documentation/
 
 # agent
 samples/agent.js
+
+# QoE feature spec / planning docs (local-only, not shipped)
+qoe-v1.1/
