@@ -1,3 +1,10 @@
+## [4.1.10](https://github.com/mlychndnnr/video-core-js/compare/v4.1.9...v4.1.10) (2026-06-30)
+
+
+### Bug Fixes
+
+* call npm-publish via workflow_call instead of dispatch ([2c06764](https://github.com/mlychndnnr/video-core-js/commit/2c067645c3b70dff971ca1182dd4989b945b5529))
+
 ## [4.1.9](https://github.com/mlychndnnr/video-core-js/compare/v4.1.8...v4.1.9) (2026-06-30)
 
 
