@@ -1,3 +1,10 @@
+## [4.1.9](https://github.com/mlychndnnr/video-core-js/compare/v4.1.8...v4.1.9) (2026-06-30)
+
+
+### Bug Fixes
+
+* use actions/github-script to trigger npm-publish workflow ([6ccd382](https://github.com/mlychndnnr/video-core-js/commit/6ccd38267b714c91bd7b7d3c3b05160a6b649bd0))
+
 ## [4.1.8](https://github.com/mlychndnnr/video-core-js/compare/v4.1.7...v4.1.8) (2026-06-30)
 
 
