@@ -1,3 +1,10 @@
+## [4.1.8](https://github.com/mlychndnnr/video-core-js/compare/v4.1.7...v4.1.8) (2026-06-30)
+
+
+### Bug Fixes
+
+* update to two-stage release workflow ([c5554b0](https://github.com/mlychndnnr/video-core-js/commit/c5554b080c2c6385ef30839a2fc1d76bb449313e))
+
 # Changelog
 All notable changes to this project will be documented in this file.
 
